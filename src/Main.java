@@ -4,7 +4,6 @@ public class Main {
                 Welcome to Pharmacy Management System
                 
                 Please Enter Login Information.  
-                
                 """);
     }
 }
