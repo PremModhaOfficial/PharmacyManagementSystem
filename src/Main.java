@@ -1,100 +1,16 @@
-import java.util.*;
-class Medicine {
-    String name;
-    int quantity;
-    double price;
+import main.java.MyDate;
 
-    public Medicine(String name, int quantity, double price) {
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-    }
-}
+import java.util.Scanner;
 
-class Node {
-    Medicine medicine;
-    Node next;
+public class Main {
 
-    public Node(Medicine medicine) {
-        this.medicine = medicine;
-        this.next = null;
-    }
-}
+    static PharmacyManagement pharmacy;
+    static Scanner scanner = new Scanner(System.in);
 
-class Pharmacy {
-    Node head;
-
-    public void addMedicine(String name, int quantity, double price) {
-        Medicine med = new Medicine(name, quantity, price);
-        Node newNode = new Node(med);
-
-        if (head == null) {
-            head = newNode;
-        } else {
-            Node temp = head;
-            while (temp.next != null) {
-                temp = temp.next;
-            }
-            temp.next = newNode;
-        }
-    }
-
-    public void removeMedicine(String name) {
-        if (head == null) {
-            return;
-        }
-
-        if (head.medicine.name.equals(name)) {
-            head = head.next;
-            return;
-        }
-
-        Node temp = head;
-        while (temp.next != null && !temp.next.medicine.name.equals(name)) {
-            temp = temp.next;
-        }
-
-        if (temp.next != null) {
-            temp.next = temp.next.next;
-        }
-    }
-
-    public void updateMedicine(String name, int quantity, double price) {
-        Node temp = head;
-        while (temp != null && !temp.medicine.name.equals(name)) {
-            temp = temp.next;
-        }
-
-        if (temp != null) {
-            temp.medicine.quantity = quantity;
-            temp.medicine.price = price;
-        }
-    }
-
-    public Medicine searchMedicine(String name) {
-        Node temp = head;
-        while (temp != null) {
-            if (temp.medicine.name.equals(name)) {
-                return temp.medicine;
-            }
-            temp = temp.next;
-        }
-        return null;
-    }
-
-    public void displayInventory() {
-        Node temp = head;
-        while (temp != null) {
-            Medicine med = temp.medicine;
-            System.out.println("Name: " + med.name + ", Quantity: " + med.quantity + ", Price: " + med.price);
-            temp = temp.next;
-        }
-    }
-}
-class Main {
     public static void main(String[] args) {
-        Pharmacy pharmacy = new Pharmacy();
-        Scanner scanner = new Scanner(System.in);
+        pharmacy = new PharmacyManagement();
+
+        addDummyMeds();
 
         while (true) {
             System.out.println("\nMenu:");
@@ -111,54 +27,85 @@ class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter medicine name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Enter quantity: ");
-                    int quantity = scanner.nextInt();
-                    System.out.print("Enter price: ");
-                    double price = scanner.nextDouble();
-                    pharmacy.addMedicine(name, quantity, price);
+                    addMedicine();
                     break;
 
                 case 2:
-                    System.out.print("Enter medicine name to remove: ");
-                    String removeName = scanner.nextLine();
-                    pharmacy.removeMedicine(removeName);
+                    removeMedicine();
                     break;
 
                 case 3:
-                    System.out.print("Enter medicine name to update: ");
-                    String updateName = scanner.nextLine();
-                    System.out.print("Enter new quantity: ");
-                    int newQuantity = scanner.nextInt();
-                    System.out.print("Enter new price: ");
-                    double newPrice = scanner.nextDouble();
-                    pharmacy.updateMedicine(updateName, newQuantity, newPrice);
+                    updateMedicine();
                     break;
 
                 case 4:
-                    System.out.print("Enter medicine name to search: ");
-                    String searchName = scanner.nextLine();
-                    Medicine foundMedicine = pharmacy.searchMedicine(searchName);
-                    if (foundMedicine != null) {
-                        System.out.println("Found: " + foundMedicine.name + ", Quantity: " + foundMedicine.quantity + ", Price: " + foundMedicine.price);
-                    } else {
-                        System.out.println("Medicine not found.");
-                    }
+                    searchMedicine();
                     break;
 
                 case 5:
-                    pharmacy.displayInventory();
+                    displayInventory();
                     break;
 
                 case 6:
-                    System.out.println("Exiting...");
-                    scanner.close();
                     System.exit(0);
 
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
+        }
+    }
+
+    private static void displayInventory() {
+        pharmacy.medicines.display();
+    }
+
+    private static void searchMedicine() {
+        System.out.println("Enter Medicine Name");
+        Medicine medicine = pharmacy.medicines.get(scanner.nextLine());
+        if (medicine == null) {
+            System.out.println("No such Medicine");
+        }else {
+            System.out.println(medicine);
+        }
+    }
+
+    private static void updateMedicine() {
+        System.out.print("Enter Medicine Name:");
+        pharmacy.update();
+    }
+
+    private static void removeMedicine() {
+        System.out.print("Enter Medicine Name:");
+        pharmacy.remove(scanner.nextLine());
+    }
+
+    private static void addMedicine() {
+        System.out.print("Enter medicine name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter quantity: ");
+        int quantity = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Enter price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine();
+        System.out.print("Enter Expiry-date in 'YYYY-MM-DD' format");
+        String dateString = scanner.nextLine();
+        MyDate expiryDate = new MyDate(dateString);
+        System.out.print("Enter Supplier name :");
+        String supplier = scanner.nextLine();
+        pharmacy.addMedicine(name, quantity, price, expiryDate, supplier);
+
+    }
+
+    private static void addDummyMeds() {
+        // Add 55 dummy medicines to the pharmacy
+        for (int i = 1; i <= 55; i++) {
+            String name = "Medicine" + i;
+            int quantity = 100 + i; // Adjust quantity as needed
+            double price = 5.0 + (i * 0.5); // Adjust price as needed
+            MyDate expirationDate = new MyDate(MyDate.randomDate()); // Set an arbitrary expiration date
+            String supplier = "Supplier" + i;
+            pharmacy.addMedicine(name, quantity, price, expirationDate, supplier);
         }
     }
 }
