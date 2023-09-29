@@ -1,4 +1,4 @@
-import main.java.MyDate;
+import MyDatastructures.java.MyDate;
 
 public class Medicine {
     private  String name, supplier;

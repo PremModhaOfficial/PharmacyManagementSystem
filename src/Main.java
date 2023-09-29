@@ -1,17 +1,15 @@
-import main.java.MyDate;
-
+import MyDatastructures.java.MyDate;
 import java.util.Scanner;
 
 public class Main {
-
     static PharmacyManagement pharmacy;
     static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
         pharmacy = new PharmacyManagement();
+        System.out.println("Enter Current Date in 'yyyy-mm-dd' format");
+        pharmacy.setCurrentDate(new MyDate(scanner.nextLine()));
 
         addDummyMeds();
-
         while (true) {
             System.out.println("\nMenu:");
             System.out.println("1. Add Medicine");
@@ -19,7 +17,8 @@ public class Main {
             System.out.println("3. Update Medicine");
             System.out.println("4. Search Medicine");
             System.out.println("5. Display Inventory");
-            System.out.println("6. Exit");
+            System.out.println("6. Remove Expired Medicine");
+            System.out.println("7. Exit");
             System.out.print("Enter your choice: ");
 
             int choice = scanner.nextInt();
@@ -47,6 +46,10 @@ public class Main {
                     break;
 
                 case 6:
+                    pharmacy.removeExpiredMedicine();
+
+                case 7:
+                    System.out.println("exiting... \nThank you ;)");
                     System.exit(0);
 
                 default:

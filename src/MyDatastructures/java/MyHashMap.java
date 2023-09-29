@@ -1,4 +1,4 @@
-package main.java;
+package MyDatastructures.java;
 
 import java.util.ArrayList;
 
@@ -64,8 +64,16 @@ public class MyHashMap<K, V> {
 
     public static class Node<K, V> {
         K key;
-        V value;
-        Node<K, V> next;
+        public V value;
+        public Node<K, V> next;
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
 
         public Node(K key, V value) {
             this.key = key;

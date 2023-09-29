@@ -1,4 +1,4 @@
-package main.java;
+package MyDatastructures.java;
 
 import java.util.Scanner;
 
@@ -7,6 +7,11 @@ class demo{
         MyDate d = new MyDate("1-1-1");
         for (int i = 0; i < 100; i++) {
             System.out.println(MyDate.randomDate());
+        }
+        MyDate date = new MyDate("2016-12-31");
+        for (int i = 0; i < 102; i++) {
+            System.out.println(date);
+            date = date.nextYear();
         }
     }
 }
@@ -42,7 +47,7 @@ public class MyDate {
         for (int i = 0; i < 3; i++) {
             for (int j = 'a'; j <= 'z'; j++) {
                 if (arr[i].toLowerCase().contains((char) j + "")) {
-                    System.out.println("INVALID DATE RE-ENTER");
+                    System.out.println("INVALID DATE RE-ENTER in 'yyyy-dd-mm' format!");
                     return validateDateString(scanner.nextLine());
                 }
             }
@@ -125,15 +130,5 @@ public class MyDate {
             i--;
         }
         return d;
-    }
-}
-
-class MyDateDemo {
-    public static void main(String[] args) {
-        MyDate date = new MyDate("2016-12-31");
-        for (int i = 0; i < 102; i++) {
-            System.out.println(date);
-            date = date.nextYear();
-        }
     }
 }
