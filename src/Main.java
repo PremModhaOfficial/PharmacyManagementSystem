@@ -101,7 +101,10 @@ public class Main {
     }
 
     private static void addDummyMeds() {
-        // Add 55 dummy medicines to the pharmacy
+        /**
+         * Adds dummy items
+         * In both the HashMaps
+         */
         for (int i = 1; i <= 55; i++) {
             String name = "Medicine" + i;
             int quantity = 100 + i; // Adjust quantity as needed
